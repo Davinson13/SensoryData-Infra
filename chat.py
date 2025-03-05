@@ -10,6 +10,9 @@ from dotenv import load_dotenv
 # 🔹 Cargar variables de entorno
 load_dotenv()
 
+# 🔹 Depuración: Mostrar todas las variables de entorno disponibles
+print("Variables de entorno disponibles:", os.environ)
+
 api_key = os.getenv("GROQ_API_KEY")
 if not api_key:
     raise ValueError("⚠️ No se encontró GROQ_API_KEY en las variables de entorno")
