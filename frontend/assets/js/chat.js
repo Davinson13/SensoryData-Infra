@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 🔹 Cargar la lista de proyectos (Excels disponibles)
     async function loadProjects() {
         try {
-            const response = await fetch("http://127.0.0.1:5000/api/lista_excels");
+            const response = await fetch("https://sensorydata.onrender.com/api/lista_excels");
             const data = await response.json();
 
             if (data.archivos && data.archivos.length > 0) {
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         try {
-            const response = await fetch("http://127.0.0.1:5000/api/procesar_excel", {
+            const response = await fetch("https://sensorydata.onrender.com/api/procesar_excel", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ archivo: selectedFile }),
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
         userInput.value = "";
 
         try {
-            const response = await fetch("http://127.0.0.1:5000/api/chat", {
+            const response = await fetch("https://sensorydata.onrender.com/api/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ pregunta: message, datos: datosProcesados }),
