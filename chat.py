@@ -23,9 +23,8 @@ qclient = Groq(api_key=GROQ_API_KEY)
 app = Flask(__name__, static_folder="frontend", template_folder="frontend")
 CORS(app)  # Permitir acceso desde el frontend
 
-# 🔹 Asegurar que Flask siempre acceda a la ruta absoluta de los datos
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Ruta base del proyecto
-DATA_FOLDER = os.path.join(BASE_DIR, "data")  # Ruta absoluta de la carpeta data
+# 🔹 Ruta de los archivos Excel
+DATA_FOLDER = "Data/"
 
 # 🔹 Servir la página principal (index.html)
 @app.route("/")
