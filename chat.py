@@ -10,14 +10,15 @@ from dotenv import load_dotenv
 # 🔹 Cargar variables de entorno
 load_dotenv()
 
-# 🔹 Imprimir solo la variable específica para verificar si Railway la detecta
-print(f"GROQ_API_KEY detectada: {os.getenv('GROQ_API_KEY')}")
+# 🔹 Mostrar todas las variables de entorno disponibles
+print("🔍 Variables de entorno dentro del contenedor:")
+for key, value in os.environ.items():
+    print(f"{key}: {value}")
 
-# Obtener API Key de entorno
+# 🔹 Verificar GROQ_API_KEY
 api_key = os.getenv("GROQ_API_KEY")
 if not api_key or api_key == "None":
     raise ValueError("⚠️ GROQ_API_KEY no se detecta en Railway.")
-
 # Inicializar cliente de Groq con la API Key
 qclient = Groq(api_key=api_key)
 
