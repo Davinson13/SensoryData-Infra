@@ -10,13 +10,15 @@ from dotenv import load_dotenv
 # 🔹 Cargar variables de entorno
 load_dotenv()
 
-# 🔹 Depuración: Mostrar todas las variables de entorno disponibles
-print("Variables de entorno disponibles:", os.environ)
+# 🔹 Imprimir solo la variable específica para verificar si Railway la detecta
+print(f"GROQ_API_KEY detectada: {os.getenv('GROQ_API_KEY')}")
 
+# Obtener API Key de entorno
 api_key = os.getenv("GROQ_API_KEY")
-if not api_key:
-    raise ValueError("⚠️ No se encontró GROQ_API_KEY en las variables de entorno")
+if not api_key or api_key == "None":
+    raise ValueError("⚠️ GROQ_API_KEY no se detecta en Railway.")
 
+# Inicializar cliente de Groq con la API Key
 qclient = Groq(api_key=api_key)
 
 # 🔹 Inicializar Flask
