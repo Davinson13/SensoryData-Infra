@@ -10,9 +10,11 @@ from dotenv import load_dotenv
 # 🔹 Cargar variables de entorno
 load_dotenv()
 
-logger.info(os.getenv('GROQ_API_KEY'))
+api_key = os.getenv("GROQ_API_KEY")
+if not api_key:
+    raise ValueError("⚠️ No se encontró GROQ_API_KEY en las variables de entorno")
 
-qclient = Groq()
+qclient = Groq(api_key=api_key)
 
 # 🔹 Inicializar Flask
 app = Flask(__name__)
