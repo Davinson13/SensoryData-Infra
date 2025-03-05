@@ -23,8 +23,13 @@ qclient = Groq(api_key=GROQ_API_KEY)
 app = Flask(__name__, static_folder="frontend", template_folder="frontend")
 CORS(app)  # Permitir acceso desde el frontend
 
-# 🔹 Ruta de los archivos Excel
-DATA_FOLDER = "Data/"
+# 🔹 Ruta de los archivos Excel (Ruta absoluta para evitar errores en Render)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_FOLDER = os.path.join(BASE_DIR, "data")
+
+# 🔹 Verificar si la carpeta data existe
+if not os.path.exists(DATA_FOLDER):
+    logger.warning(f"⚠️ La carpeta {DATA_FOLDER} no existe en Render.")
 
 # 🔹 Servir la página principal (index.html)
 @app.route("/")
@@ -36,19 +41,34 @@ def home():
 def serve_static(filename):
     return send_from_directory("frontend", filename)
 
+# 🔹 Endpoint para verificar si la carpeta data existe y contiene archivos
+@app.route("/api/verificar_data", methods=["GET"])
+def verificar_data():
+    if not os.path.exists(DATA_FOLDER):
+        return jsonify({"error": "⚠️ La carpeta data no existe en Render."})
+
+    archivos = os.listdir(DATA_FOLDER)
+    return jsonify({"archivos_en_data": archivos})
+
 # 🔹 Obtener la lista de archivos disponibles
 def obtener_lista_excels():
     try:
+        if not os.path.exists(DATA_FOLDER):
+            return []
+
         archivos = [f for f in os.listdir(DATA_FOLDER) if f.endswith(".xlsx") or f.endswith(".csv")]
         return archivos
     except Exception as e:
+        logger.error(f"Error al obtener archivos de {DATA_FOLDER}: {str(e)}")
         return []
 
 # 🔹 Cargar datos de un archivo Excel o CSV
 def cargar_datos_excel(nombre_archivo):
     try:
         ruta = os.path.join(DATA_FOLDER, nombre_archivo)
+
         if not os.path.exists(ruta):
+            logger.error(f"⚠️ Archivo no encontrado: {ruta}")
             return {"error": f"Archivo {nombre_archivo} no encontrado en {DATA_FOLDER}"}, 404
 
         if nombre_archivo.endswith(".csv"):
@@ -58,6 +78,7 @@ def cargar_datos_excel(nombre_archivo):
 
         return df.to_dict(orient="records")
     except Exception as e:
+        logger.error(f"Error al leer {nombre_archivo}: {str(e)}")
         return {"error": f"Error al leer {nombre_archivo}: {str(e)}"}
 
 # 🔹 Endpoint para obtener la lista de archivos disponibles
