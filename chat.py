@@ -31,6 +31,11 @@ DATA_FOLDER = os.path.join(BASE_DIR, "data")
 if not os.path.exists(DATA_FOLDER):
     logger.warning(f"⚠️ La carpeta {DATA_FOLDER} no existe en Render.")
 
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('frontend', 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 # 🔹 Servir la página principal (index.html)
 @app.route("/")
 def home():
