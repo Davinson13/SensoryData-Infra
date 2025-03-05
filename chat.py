@@ -7,7 +7,7 @@ from loguru import logger
 from groq import Groq
 from dotenv import load_dotenv
 
-# 🔹 Cargar variables de entorno .env
+# 🔹 Cargar variables de entorno
 load_dotenv()
 
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
